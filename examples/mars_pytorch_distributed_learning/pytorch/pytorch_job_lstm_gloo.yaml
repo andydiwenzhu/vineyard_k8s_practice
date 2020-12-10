@@ -1,0 +1,31 @@
+apiVersion: "kubeflow.org/v1"
+kind: "PyTorchJob"
+metadata:
+  name: "pytorch-dist-lstm-gloo"
+spec:
+  pytorchReplicaSpecs:
+    Master:
+      replicas: 1
+      restartPolicy: OnFailure
+      template:
+        metadata:
+          annotations:
+            sidecar.istio.io/inject: "false"
+        spec:
+          containers:
+            - name: pytorch
+              image: image_server/vineyard_k8s/pytorch_dist_lstm:latest
+              args: ["--backend", "gloo"]
+    Worker:
+      replicas: 3
+      restartPolicy: OnFailure
+      template:
+        metadata:
+          annotations:
+            sidecar.istio.io/inject: "false"
+        spec:
+          containers: 
+            - name: pytorch
+              image: image_server/vineyard_k8s/pytorch_dist_lstm:latest
+              args: ["--backend", "gloo"]
+
