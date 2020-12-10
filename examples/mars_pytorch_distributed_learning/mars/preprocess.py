@@ -9,6 +9,6 @@ vineyard_deployment = vineyard.connect('vineyard-k8s-service')
 # within the scope of the session
 mars.session(vineyard_deployment)
 
-dataset = md.from_vineyard(vineyard.io.stream.open('hdfs://server/data_full'))
+dataset = md.from_vineyard(vineyard.io.open('hdfs://server/data_full'))
 
 df = dataset.dropna().filter(condition).vectorize(method).to_vineyard()
